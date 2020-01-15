@@ -1,0 +1,18 @@
+function sendNotif() {
+//  We get the first sheet in the spreadsheet, data is now a 2D array that contains the values of the spreadsheet
+var sheet = SpreadsheetApp.getActiveSheet();
+var data = sheet.getDataRange().getValues(); 
+
+var emailAddress=data[1][0];
+  for(var i=3;i<data.length;i++){
+  
+    if( (data[i][2]*(1-data[i][4]/100))> data[i][3] ){
+      var percentage=-(data[i][3]-data[i][2])/data[i][3]*100;
+      var percentageLowered=parseFloat(percentage.toFixed(2));
+      var message=data[i][1]+" stock is down by "+percentageLowered+"%";
+      var subject="Stock Movement Alert : "+data[i][1];
+      MailApp.sendEmail(emailAddress, subject, message);
+    }
+  }
+
+}
